@@ -317,28 +317,19 @@
 <body>
   <div id="app"></div>
 <script>
-    // 1. 检查当前环境是否为 GitHub Pages 的子目录（线上）
-    var path = window.location.pathname;
-    var isGitHubPages = path.indexOf('/BUAA-Econ-Wiki/') > -1;
-    
-    // 2. 根据环境设置不同的 basePath
-    // 线上环境使用子目录路径，本地环境使用空路径
-    var docsifyBasePath = isGitHubPages ? '/BUAA-Econ-Wiki/' : '';
+  window.$docsify = {
+    name: 'BUAA Econ Wiki',
 
-    window.$docsify = {
-        name: 'BUAA Econ Wiki',
-        repo: 'https://github.com/CivinWang/BUAA-Econ-Wiki',
-        
-        // 🚀 关键：使用动态的 basePath
-        basePath: docsifyBasePath, 
-        loadSidebar: false, 
-        coverpage: true, 
-        onlyCover: true,
-        auto2top: true, 
-        subMaxLevel: 2
-    }
+    coverpage: true,   // 保留你的封面
+    onlyCover: false,  // ❗允许进入正文（关键）
+
+    loadSidebar: false,
+    relativePath: true, // ❗修复 GitHub Pages 子路径最关键配置
+
+    auto2top: true,
+    subMaxLevel: 2,
+  };
 </script>
 <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 </body>
 </html>
