@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>BUAA Econ Wiki | 北航经济学资料库</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================
+       1. 全局配置
+       ========================================= */
+    :root { 
+      --cover-font: "Anton", Impact, sans-serif;
+      --body-font: "Microsoft YaHei", "PingFang SC", sans-serif;
+      --bg-black: #000000; 
+      --bg-white: #ffffff;
+    }
+
+    html, body {
+        height: 100%; margin: 0; padding: 0;
+        font-family: var(--body-font) !important; 
+        color: #34495e;
+        scroll-snap-type: y mandatory; 
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        background-color: var(--bg-black);
+        transition: background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    
+    ::-webkit-scrollbar { width: 0px; background: transparent; }
+    .sidebar, .sidebar-toggle, .github-corner { display: none !important; }
+    
+    body.ready { left: 0 !important; }
+    .content { 
+        left: 0 !important; margin: 0 !important; padding: 0 !important;
+        max-width: 100% !important; width: 100% !important;
+        padding-top: 0 !important;
+    }
+    .markdown-section { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+    /* =========================================
+       2. 正文入场动画
+       ========================================= */
+    section.content {
+        animation: appleSlideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0; transform: translateY(40px);
+    }
+    @keyframes appleSlideUp {
+        0% { opacity: 0; transform: translateY(40px) scale(0.98); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* =========================================
+       3. 封面样式
+       ========================================= */
+    section.cover {
+        background-color: #000000 !important;
+        background-image: none !important;
+        z-index: 999;
+    }
+    .cover-main { margin-top: -20px; }
+    .author-tag {
+        font-size: 0.9rem; color: rgba(255, 255, 255, 0.5); letter-spacing: 0.4em;
+        margin-bottom: 2vh; border: 1px solid rgba(255, 255, 255, 0.2); 
+        padding: 6px 18px; border-radius: 100px; display: inline-block;
+        font-family: var(--body-font); opacity: 0; animation: fadeDown 1s ease forwards 0.2s;
+    }
+    .brand-title {
+        font-family: var(--cover-font); font-weight: 400; font-size: 9vw; line-height: 0.9;
+        text-transform: uppercase; color: #ffffff; text-align: center; white-space: nowrap;
+        margin: 10px 0; opacity: 0; transform: scale(0.95);
+        animation: zoomIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.3s;
+    }
+    .brand-title .outline { color: transparent; -webkit-text-stroke: 2px #ffffff; }
+    .subtitle {
+        font-size: 1rem; color: rgba(255, 255, 255, 0.7); margin-top: 3vh; letter-spacing: 0.2em;
+        font-family: var(--body-font); opacity: 0; animation: fadeUp 1s ease forwards 0.6s;
+    }
+    .action-btn-container { margin-top: 5vh; opacity: 0; animation: fadeUp 1s ease forwards 0.8s; }
+    a.action-btn {
+        border: 1px solid rgba(255,255,255,0.8); color: #ffffff; padding: 12px 40px; 
+        font-size: 0.9rem; font-weight: bold; text-decoration: none; text-transform: uppercase; 
+        transition: all 0.3s; border-radius: 4px; font-family: var(--body-font); cursor: pointer;
+    }
+    a.action-btn:hover { background: #ffffff; color: #000000; border-color: #ffffff; }
+
+    @keyframes zoomIn { to { opacity: 1; transform: scale(1); } }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* =========================================
+       4. 滑动块与网格样式 (字号微调版)
+       ========================================= */
+    .slide-block {
+        height: 100vh; width: 100%;
+        scroll-snap-align: start; scroll-snap-stop: always;
+        display: flex; flex-direction: column;
+        justify-content: center; align-items: center;
+        padding: 40px; box-sizing: border-box;
+    }
+
+    .theme-black { background-color: var(--bg-black); color: #ffffff; }
+    .theme-white { background-color: var(--bg-white); color: #000000; }
+
+    /* 2x2 网格容器 */
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 30px; /* 间距稍微收紧 */
+        width: 100%;
+        margin-top: 30px;
+    }
+    
+    /* 卡片样式 */
+    .grid-card {
+        border: 1px solid #e5e5e5;
+        padding: 25px 30px; /* 🔥 减小内边距，让内容更紧凑 */
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        background: #fff;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .grid-card:hover {
+        border-color: #000;
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    }
+    
+    /* 🔥 字号调整核心区域 🔥 */
+    .grid-card h3 {
+        font-family: var(--cover-font);
+        font-size: 1.6rem !important; /* 缩小标题 */
+        margin: 0 0 8px 0 !important;
+        color: #174078 !important;
+        line-height: 1;
+    }
+    .grid-card p.tag {
+        font-size: 0.75rem; /* 缩小标签 */
+        color: #aaa;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+    .grid-card ul {
+        padding-left: 18px;
+        margin: 0;
+        color: #444;
+        line-height: 1.6; /* 行间距稍微收紧 */
+        font-size: 0.9rem; /* 缩小正文列表 */
+    }
+    .grid-card ul li {
+        margin-bottom: 5px; /* 列表项间距收紧 */
+    }
+    
+    .grid-card a {
+        color: #174078;
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 0.85rem; /* 链接字号微调 */
+        border-bottom: 1px solid rgba(23,64,120,0.1);
+        display: inline-block;
+        margin-top: 5px;
+    }
+    .grid-card a:hover { border-bottom-color: #174078; }
+
+    /* 手机端适配 */
+    @media screen and (max-width: 768px) {
+        .brand-title { font-size: 15vw; line-height: 1.0; }
+        .brand-title .outline { -webkit-text-stroke: 1px #ffffff; }
+        .grid-container { grid-template-columns: 1fr; gap: 20px; } 
+    }
+    /* =========================================
+/* =========================================
+       5. 新增：横向滑动课程流 (带精致滚动条版)
+       ========================================= */
+    .scroll-container {
+        display: flex;
+        overflow-x: auto; /* 允许横向滚动 */
+        gap: 30px;        /* 卡片间距 */
+        
+        /* 调整内边距：底部留出空间给滚动条，防止太挤 */
+        padding: 20px 5px 30px 5px; 
+        
+        scroll-snap-type: x mandatory; /* 保持磁吸效果 */
+        -webkit-overflow-scrolling: touch; 
+        
+        /* Firefox 滚动条样式 */
+        scrollbar-width: thin;
+        scrollbar-color: #ccc #f5f5f5;
+    }
+
+    /* 🔥 自定义 Webkit (Chrome/Edge/Safari) 滚动条样式 🔥 */
+    /* 滚动条整体轨道 */
+    .scroll-container::-webkit-scrollbar {
+        height: 8px; /* 滚动条高度，设细一点比较精致 */
+    }
+    
+    /* 滚动条背景槽 */
+    .scroll-container::-webkit-scrollbar-track {
+        background: #f9f9f9; /* 极淡的灰色背景 */
+        border-radius: 4px;
+    }
+    
+    /* 滚动条滑块 (Thumb) */
+    .scroll-container::-webkit-scrollbar-thumb {
+        background: #d1d1d1; /* 默认是浅灰色，不抢眼 */
+        border-radius: 4px;  /* 圆角设计 */
+        transition: background 0.3s;
+    }
+
+    /* 鼠标悬停在滑块上时，变成北航蓝 */
+    .scroll-container::-webkit-scrollbar-thumb:hover {
+        background: #174078; 
+        cursor: pointer;
+    }
+
+
+    /* --- 以下是卡片样式 (保持不变) --- */
+/* =========================================
+       5. 新增：横向滑动流 (Compact 迷你版)
+       ========================================= */
+    .scroll-container {
+        display: flex;
+        overflow-x: auto;
+        gap: 20px; /* 间距缩小 */
+        padding: 20px 5px 30px 5px;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+        scrollbar-color: #ccc transparent;
+    }
+    
+    /* 迷你卡片核心样式 */
+    .course-card {
+        flex: 0 0 250px; /* 🔥 宽度变小：从320改到250 */
+        height: 340px;   /* 🔥 高度变矮：从420改到340 */
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 20px;   /* 内边距缩小 */
+        box-sizing: border-box;
+        scroll-snap-align: start;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .course-card:hover {
+        transform: translateY(-5px); /* 浮起高度稍微减小 */
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        border-color: #000;
+    }
+
+    /* 顶部：代号与标签 */
+    .course-top {
+        display: flex; justify-content: space-between; align-items: flex-start;
+        margin-bottom: 5px;
+    }
+    .course-code {
+        font-family: var(--cover-font); color: #f2f2f2; font-size: 3rem; /* 字号减小 */
+        line-height: 0.8; 
+    }
+    .course-tag {
+        background: #f5f5f7; color: #666; font-size: 0.6rem; padding: 3px 8px; 
+        border-radius: 4px; font-weight: bold; letter-spacing: 0.5px; text-transform: uppercase;
+    }
+
+    /* 中部：信息 (更紧凑) */
+    .course-info { flex-grow: 1; z-index: 2; margin-top: 5px; }
+    
+    .course-title {
+        font-size: 1.3rem; /* 标题减小 */
+        font-weight: 800; color: #000; 
+        margin: 10px 0 8px 0; 
+        line-height: 1.1;
+    }
+    .course-desc {
+        font-size: 0.85rem; color: #86868b; line-height: 1.5;
+        /* 限制显示3行，超出省略 */
+        display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; 
+    }
+
+    /* 底部：迷你导航栏 */
+    .course-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 4px;
+        border-top: 1px solid #f5f5f7;
+        padding-top: 15px; /* 间距缩小 */
+        margin-top: 15px;
+    }
+
+    .action-item {
+        text-decoration: none; text-align: center; padding: 6px 0;
+        border-radius: 6px; transition: 0.2s;
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+    }
+    .action-item:hover { background: #f5f5f7; }
+    
+    .action-icon { font-size: 1rem; margin-bottom: 0; } /* 图标变小 */
+    .action-label { font-size: 0.6rem; color: #000; font-weight: 600; text-transform: uppercase; transform: scale(0.9); }
+  </style>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'BUAA Econ Wiki',
+      repo: 'https://github.com/CivinWang/BUAA-Econ-Wiki',
+      loadSidebar: false, coverpage: true, onlyCover: true,
+      auto2top: true, subMaxLevel: 2
+    }
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+</body>
+</html>
